@@ -350,7 +350,7 @@ function Index() {
         <div className="wx-footer-bottom">
           <p className="wx-copyright">
             <a className="is-underline" href={SUPERTALKS_URL} target="_blank" rel="noreferrer noopener">
-              © 2035 by Lee Mor. Powered and secured by Supertalks
+              © 2027 by Lee Mor. Powered and secured by Supertalks
             </a>
           </p>
         </div>

@@ -35,16 +35,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-
-const DISPLAY_STACKS: Record<string, string> = {
-  serif: '"eschaton", Georgia, serif',
-  sans: '"futura-lt-w01-book", Futura, "Century Gothic", system-ui, sans-serif',
-};
-
-const BODY_STACKS: Record<string, string> = {
-  sans: '"futura-lt-w01-book", Futura, "Century Gothic", system-ui, sans-serif',
-  serif: '"eschaton", Georgia, serif',
-};
+import { ensureFont, fontStack, fontVars } from "./site-fonts";
 
 // Sections whose content is required for bookings/questions and must stay
 // fixed for the astrologer (not editable in the builder preview).
@@ -83,52 +74,16 @@ function num(value: unknown, fallback: number): number | string {
   return typeof value === "number" ? value : fallback;
 }
 
-// A real Google Font family name (as opposed to the built-in serif/sans categories).
-function fontStack(value: string, stacks: Record<string, string>, fallbackKey: string): string {
-  if (value in stacks) return stacks[value] as string;
-  if (value && value !== "serif" && value !== "sans") {
-    return `"${value}", system-ui, sans-serif`;
-  }
-  return stacks[fallbackKey] as string;
-}
-
-const loadFonts: Record<string, Promise<void>> = {};
-
-function ensureFont(family: string): void {
-  if (!family || family === "serif" || family === "sans" || loadFonts[family]) return;
-  if (typeof document === "undefined") return;
-  loadFonts[family] = (async () => {
-    const id = `gf-${family.replace(/[^a-zA-Z0-9]/g, "-")}`;
-    if (document.getElementById(id)) return;
-    const url = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(
-      family,
-    )}:wght@400;500;600;700&display=swap`;
-    const link = document.createElement("link");
-    link.id = id;
-    link.rel = "stylesheet";
-    link.href = url;
-    document.head.appendChild(link);
-    try {
-      await document.fonts.load(`16px "${family}"`);
-    } catch {
-      /* font may not be available yet */
-    }
-  })();
-}
-
 export function designVars(design: Record<string, unknown>): React.CSSProperties {
   const dv = design ?? {};
-  const displayFont = str(dv["displayFont"], "serif");
-  const bodyFont = str(dv["bodyFont"], "sans");
-  ensureFont(displayFont);
-  ensureFont(bodyFont);
   return {
     "--site-maroon": str(dv["primaryColor"], "#771609"),
     "--site-pink": str(dv["panelColor"], "#fff4f3"),
     "--site-white": str(dv["backgroundColor"], "#fffcfc"),
     "--site-dark": str(dv["darkColor"], "#253039"),
-    "--site-display": fontStack(displayFont, DISPLAY_STACKS, "serif"),
-    "--site-body": fontStack(bodyFont, BODY_STACKS, "sans"),
+    // "Headings & Buttons" and "Body Text" - see lib/site-fonts.ts for which
+    // elements each one owns.
+    ...fontVars(dv),
     "--site-scale": num(dv["scale"], 1) as number,
   } as React.CSSProperties;
 }
@@ -244,12 +199,8 @@ function styleSheetFor(style: FieldStyle): React.CSSProperties {
   if (style.fontStyle) out["fontStyle"] = style.fontStyle;
   if (style.textTransform) out["textTransform"] = style.textTransform;
   if (style.fontFamily) {
-    const family = style.fontFamily;
-    ensureFont(family);
-    out["fontFamily"] =
-      family === "serif" || family === "sans"
-        ? fontStack(family, DISPLAY_STACKS, "sans")
-        : `"${family}", system-ui, sans-serif`;
+    ensureFont(style.fontFamily);
+    out["fontFamily"] = fontStack(style.fontFamily, "sans");
   }
   return out as React.CSSProperties;
 }
@@ -285,10 +236,14 @@ function Editable({
   ...rest
 }: EditableProps & Record<string, unknown>) {
   const elRef = useRef<HTMLElement | null>(null);
-  const mergedStyle: React.CSSProperties = {
-    ...styleSheetFor(fieldStyleOf(section, field)),
-    ...style,
-  };
+  const fieldStyle = styleSheetFor(fieldStyleOf(section, field));
+  // A per-element font override is an explicit choice, so it has to win over
+  // the section's own inline styles - otherwise an unrelated `style` prop on
+  // the element would silently drop it and the text would keep following the
+  // site-wide font bucket instead.
+  const mergedStyle: React.CSSProperties = fieldStyle.fontFamily
+    ? { ...fieldStyle, ...style, fontFamily: fieldStyle.fontFamily }
+    : { ...fieldStyle, ...style };
 
   // Keep the DOM text in sync with the stored value, but never clobber the
   // caret while the user is actively typing inside the element.
@@ -1335,11 +1290,12 @@ function BookingSection({
                           <button
                             key={slot.startAt}
                             type="button"
-                            className="wx-slot"
+                            className={`wx-slot${slot.yours ? " wx-slot-yours" : ""}`}
                             disabled={submitting}
                             onClick={() => handleSelect(slot)}
                           >
                             {formatTime(slot.startAt)}
+                            {slot.yours ? <span className="wx-slot-yours-tag">reserving</span> : null}
                           </button>
                         ))}
                       </div>

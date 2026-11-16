@@ -68,13 +68,18 @@
 
 :root {
   /* Dynamic per-astrologer theme tokens. Overridden at runtime on .wx-page
-     from the template's design tokens (see routes/$slug.tsx). */
+     from the template's design tokens (see routes/$slug.tsx).
+     The two font vars must carry a real stack here: a self-reference like
+     `--site-display: var(--site-display)` is a cycle, which invalidates the
+     property at computed-value time and silently drops `body`'s font-family
+     to the browser default on every page outside .wx-page (dashboard,
+     portaled modals). */
   --site-maroon: #771609;
   --site-pink: #fff4f3;
   --site-white: #fffcfc;
   --site-dark: #253039;
-  --site-display: var(--site-display);
-  --site-body: var(--site-body);
+  --site-display: "eschaton", Georgia, serif;
+  --site-body: "futura-lt-w01-book", Futura, "Century Gothic", system-ui, sans-serif;
 
   --radius: 0.625rem;
   --ink: var(--site-maroon);
@@ -172,15 +177,27 @@
    Wix "Therapist (Organic)" clone classes
    ============================================================ */
 
+/* ---- Font buckets -------------------------------------------------
+   The Customize tab exposes exactly two font selectors and each one owns
+   a disjoint, intentional set of text:
+
+     --site-display  "Headings & Buttons" - h1-h4, the site name, the
+                     full-screen menu links, pull quotes, and the labels on
+                     CTA / auth buttons.
+     --site-body     "Body Text" - paragraphs, sub-text under a heading,
+                     captions, form and data labels, and interactive controls
+                     (tabs, time slots, inputs) whose text is data.
+
+   .wx-page supplies the body stack as the default for everything, so a rule
+   only needs to name a font-family when it is a heading or a button.
+   Element-level overrides from the builder still win over both, since they
+   are set inline on the element. */
+
 .wx-page {
   width: 100%;
   background: var(--site-white);
   color: var(--site-maroon);
   font-family: var(--site-body);
-}
-
-.wx-serif {
-  font-family: var(--site-display);
 }
 
 /* ------ Header ------ */
@@ -371,7 +388,9 @@
 .wx-hero-copy .wx-hero-sub {
   margin: 12px 0 0;
   color: var(--site-maroon);
-  font-family: var(--site-display);
+  /* Sub-text under the headline: part of the Body Text bucket, so it follows
+     the body selector rather than the heading above it. */
+  font-family: var(--site-body);
   font-size: 36px;
   line-height: 1.2;
 }
@@ -395,7 +414,8 @@
   padding: 13px 40px;
   background: var(--site-maroon);
   color: var(--site-white);
-  font-family: var(--site-body);
+  /* Button label: part of the Headings & Buttons bucket. */
+  font-family: var(--site-display);
   font-size: 18px;
   line-height: 1.2;
 }
@@ -490,7 +510,7 @@
   border: 1px solid var(--site-maroon);
   background: transparent;
   color: var(--site-maroon);
-  font-family: var(--site-body);
+  font-family: var(--site-display);
   font-size: 18px;
 }
 
@@ -641,7 +661,9 @@
 }
 
 .wx-services-grid .wx-service-price {
-  font-family: var(--site-display);
+  /* Data value, not a heading - Body Text bucket, matching the price shown in
+     the service dialog. */
+  font-family: var(--site-body);
   font-size: 20px;
 }
 
@@ -701,7 +723,9 @@
 .wx-book-service-name {
   display: block;
   color: var(--site-maroon);
-  font-family: var(--site-display);
+  /* Data value, not a heading - Body Text bucket, matching the service name
+     shown in the service dialog. */
+  font-family: var(--site-body);
   font-size: 20px;
 }
 
@@ -1171,6 +1195,24 @@
   cursor: default;
 }
 
+/* The signed-in viewer's own in-progress checkout: highlighted instead of
+   hidden, so it reads as "you're reserving this" rather than "taken". */
+.wx-slot.wx-slot-yours {
+  border-color: var(--site-maroon);
+  border-style: dashed;
+  background: color-mix(in srgb, var(--site-maroon) 8%, var(--site-white));
+}
+
+.wx-slot-yours-tag {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
 .wx-book-note {
   margin: 22px 0 0;
   color: var(--site-maroon);
@@ -1181,7 +1223,8 @@
 .wx-book-ok {
   margin: 18px 0 0;
   color: var(--site-maroon);
-  font-family: var(--site-display);
+  /* Confirmation copy, not a heading - Body Text bucket. */
+  font-family: var(--site-body);
   font-size: 18px;
   line-height: 1.4;
 }
@@ -1219,7 +1262,7 @@
   border-radius: 6.75px;
   background: transparent;
   color: var(--site-maroon);
-  font-family: var(--site-body);
+  font-family: var(--site-display);
   font-size: 15px;
   line-height: 1.2;
   text-decoration: none;

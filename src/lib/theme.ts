@@ -7,17 +7,13 @@
  * bookings pages, portaled modals, floating buttons — matches the astrologer's
  * theme. The last-visited astrologer's design is persisted in localStorage so
  * those pages keep the theme on a fresh visit.
+ *
+ * The font half of the tokens is resolved by site-fonts.ts, which both this
+ * module and the rendered site share, so a font picked in the Customize tab
+ * resolves to the same stack on both.
  */
 
-const DISPLAY_STACKS: Record<string, string> = {
-  serif: '"eschaton", Georgia, serif',
-  sans: '"futura-lt-w01-book", Futura, "Century Gothic", system-ui, sans-serif',
-};
-
-const BODY_STACKS: Record<string, string> = {
-  sans: '"futura-lt-w01-book", Futura, "Century Gothic", system-ui, sans-serif',
-  serif: '"eschaton", Georgia, serif',
-};
+import { fontVars } from "./site-fonts";
 
 const THEME_VAR_KEYS = [
   "--site-maroon",
@@ -39,46 +35,14 @@ function num(value: unknown, fallback: number): number | null {
   return typeof value === "number" ? value : null;
 }
 
-function fontStack(value: string, stacks: Record<string, string>, fallbackKey: string): string {
-  if (value in stacks) return stacks[value] as string;
-  if (value && value !== "serif" && value !== "sans") {
-    return `"${value}", system-ui, sans-serif`;
-  }
-  return stacks[fallbackKey] as string;
-}
-
-const loadFonts: Record<string, Promise<void>> = {};
-
-function ensureFont(family: string): void {
-  if (!family || family === "serif" || family === "sans" || loadFonts[family]) return;
-  if (typeof document === "undefined") return;
-  loadFonts[family] = (async () => {
-    const id = `gf-${family.replace(/[^a-zA-Z0-9]/g, "-")}`;
-    if (document.getElementById(id)) return;
-    const url = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(
-      family,
-    )}:wght@400;500;600;700&display=swap`;
-    const link = document.createElement("link");
-    link.id = id;
-    link.rel = "stylesheet";
-    link.href = url;
-    document.head.appendChild(link);
-  })();
-}
-
 export function siteDesignVars(design: Record<string, unknown>): Record<string, string> {
   const dv = design ?? {};
-  const displayFont = str(dv["displayFont"], "serif");
-  const bodyFont = str(dv["bodyFont"], "sans");
-  ensureFont(displayFont);
-  ensureFont(bodyFont);
   const vars: Record<string, string> = {
     "--site-maroon": str(dv["primaryColor"], "#771609"),
     "--site-pink": str(dv["panelColor"], "#fff4f3"),
     "--site-white": str(dv["backgroundColor"], "#fffcfc"),
     "--site-dark": str(dv["darkColor"], "#253039"),
-    "--site-display": fontStack(displayFont, DISPLAY_STACKS, "serif"),
-    "--site-body": fontStack(bodyFont, BODY_STACKS, "sans"),
+    ...fontVars(dv),
   };
   const scale = num(dv["scale"], 1);
   if (scale !== null) vars["--site-scale"] = String(scale);

@@ -410,11 +410,12 @@ export function ServiceDialog({
                         <button
                           key={slot.startAt}
                           type="button"
-                          className={`wx-slot${selectedSlot?.startAt === slot.startAt ? " is-selected" : ""}`}
+                          className={`wx-slot${selectedSlot?.startAt === slot.startAt ? " is-selected" : ""}${slot.yours ? " wx-slot-yours" : ""}`}
                           disabled={submitting}
                           onClick={() => pickSlot(slot)}
                         >
                           {formatTime(slot.startAt)}
+                          {slot.yours ? <span className="wx-slot-yours-tag">reserving</span> : null}
                         </button>
                       ))}
                     </div>

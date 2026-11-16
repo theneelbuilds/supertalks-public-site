@@ -23,6 +23,8 @@ export interface AuthResponse {
 export interface OpenSlot {
   startAt: string;
   endAt: string;
+  /** True when this pending checkout belongs to the signed-in viewer. */
+  yours?: boolean;
 }
 
 const hasLocalStorage = typeof localStorage !== "undefined";
