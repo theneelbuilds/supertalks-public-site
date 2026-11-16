@@ -84,5 +84,8 @@
     "typescript-eslint": "^8.72.2",
     "vite": "8.3.7"
   },
-  "peerDependencies": {}
+  "peerDependencies": {},
+  "patchedDependencies": {
+    "@tanstack/router-core@1.171.39": "patches/@tanstack%2Frouter-core@1.171.39.patch"
+  }
 }
