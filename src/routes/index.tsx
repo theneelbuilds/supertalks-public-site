@@ -12,17 +12,17 @@ import { dashboardUrl } from "@/lib/editor";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Home | Therapist" },
+      { title: "Aether Jyotish | Vedic Astrology" },
       {
         name: "description",
         content:
-          "Lee Mor is a dedicated therapist offering compassionate, personalized therapy services for individuals, couples, and families.",
+          "Acharya Vedant Sharma offers personalized Vedic astrology consultations for career, marriage, health, and spiritual guidance.",
       },
-      { property: "og:title", content: "Home | Therapist" },
+      { property: "og:title", content: "Aether Jyotish | Vedic Astrology" },
       {
         property: "og:description",
         content:
-          "Discover inner peace with Lee Mor — individual, couples, and family therapy built on confidentiality, empathy, and personalized care.",
+          "Ancient Vedic wisdom for modern life — discover your cosmic path through personalized astrology consultations.",
       },
     ],
   }),
@@ -103,12 +103,23 @@ function Index() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <main id="top" className="wx-page">
+    <main
+      id="top"
+      className="wx-page"
+      style={
+        {
+          "--site-maroon": "#771609",
+          "--site-pink": "#FFF4F0",
+          "--site-white": "#FFFCF8",
+          "--site-dark": "#253039",
+        } as React.CSSProperties
+      }
+    >
       {/* ---------------- Hero + header ---------------- */}
       <Section cls="wx-hero">
         <header className="wx-header">
           <a href="#top" aria-label="Home">
-            <img src={headerLogo} alt="Lee Mor" width={179} height={39} />
+            <img src={headerLogo} alt="Aether Jyotish" width={179} height={39} />
           </a>
           <div className="wx-header-actions">
             <a className="wx-header-dash" href={dashboardUrl("/dashboard")}>
@@ -131,12 +142,12 @@ function Index() {
           <h2>
             Discover
             <br />
-            Inner Peace
+            Your Cosmic Path
           </h2>
-          <p className="wx-hero-sub">Embrace Healing Today</p>
+          <p className="wx-hero-sub">Ancient Vedic Wisdom for Modern Life</p>
           <div className="wx-hero-buttons">
-            <a className="wx-btn wx-btn-primary" href="#words">
-              Get Started
+            <a className="wx-btn wx-btn-primary" href="#book">
+              Book Your Consultation
             </a>
             <a className="wx-btn wx-btn-outline" href={dashboardUrl("/dashboard")}>
               My Dashboard
@@ -145,79 +156,111 @@ function Index() {
         </div>
 
         <div className="wx-hero-media">
-          <img src={portrait} alt="Lee Mor seated in a warm, plant-filled room" width={720} height={694} />
+          <img
+            src={portrait}
+            alt="Acharya Vedant Sharma in a traditional astrology consultation room"
+            width={720}
+            height={694}
+          />
         </div>
       </Section>
 
       {/* ---------------- Words of Wisdom ---------------- */}
       <Section cls="wx-words" id="words">
-        <h3 className="wx-eyebrow">Words of Wisdom</h3>
+        <h3 className="wx-eyebrow">A Thought to Reflect Upon</h3>
         <Quote>
-          ״As a therapist, I believe in the power of healing through understanding and self-discovery. My goal is to
-          support you on your journey towards mental well-being and inner peace.״
+          The planets do not dictate your destiny; they illuminate the possibilities within it. Through the timeless
+          wisdom of Vedic astrology, discover your strengths, understand your challenges, and walk your life&apos;s
+          journey with clarity and confidence.
         </Quote>
       </Section>
 
-      {/* ---------------- About Lee Mor ---------------- */}
+      {/* ---------------- About the astrologer ---------------- */}
       <Section cls="wx-about" id="about">
-        <h2>About Lee Mor</h2>
+        <h2>Meet Your Astrologer</h2>
         <p className="wx-body">
-          Lee Mor is a dedicated therapist offering compassionate and personalized therapy services. With a focus on
-          empathy and confidentiality, we provide a safe space for you to explore your feelings and work towards
-          positive change. Our therapy sessions are tailored to your individual needs, promoting growth and
-          self-awareness.
+          Acharya Vedant Sharma is a fictional Vedic astrology practitioner with over 15 years of experience studying
+          Jyotish Shastra. His approach combines traditional astrological principles with thoughtful, practical
+          guidance. Specializing in birth chart analysis, planetary periods, career predictions, marriage compatibility,
+          and spiritual growth, he aims to make ancient astrological knowledge accessible to modern individuals. Every
+          consultation is approached with care, confidentiality, and a genuine commitment to helping people find
+          clarity.
         </p>
         <a className="wx-btn wx-btn-outline" href="#about">
-          Learn More
+          Discover My Journey
         </a>
       </Section>
 
-      {/* ---------------- Living room image band ---------------- */}
+      {/* ---------------- Consultation room image band ---------------- */}
       <Section cls="wx-scene" aria-hidden="true">
-        <img src={scene} alt="" width={1440} height={900} />
+        <img
+          src={scene}
+          alt="Peaceful traditional Vedic astrology consultation space with warm lighting and spiritual decor"
+          width={1440}
+          height={900}
+        />
       </Section>
 
       {/* ---------------- Services ---------------- */}
       <Section cls="wx-services" id="services">
         <div className="wx-services-grid">
           <div>
-            <h2>Services</h2>
+            <h2>Explore My Astrology Services</h2>
           </div>
           <article>
             <span className="wx-rule" />
-            <h3>Individual</h3>
+            <h3>Complete Kundli Analysis</h3>
             <p>
-              Our individual therapy sessions are designed to address your specific concerns and help you navigate
-              life&apos;s challenges. Through a collaborative and supportive approach, we aim to empower you to overcome
-              obstacles and live a fulfilling life.
+              Explore your birth chart, planetary placements, houses, yogas, doshas, strengths, and important life
+              patterns through a personalized Vedic astrology reading.
             </p>
           </article>
           <article>
             <span className="wx-rule" />
-            <h3>Couples</h3>
+            <h3>Career &amp; Financial Guidance</h3>
             <p>
-              Our couples therapy focuses on enhancing communication, building trust, and strengthening relationships.
-              We provide a neutral and supportive environment for couples to address conflicts, improve intimacy, and
-              foster a deeper connection.
+              Understand your professional potential, career opportunities, business prospects, financial patterns, and
+              favorable planetary periods.
             </p>
           </article>
-          <div aria-hidden="true" />
           <article>
             <span className="wx-rule" />
-            <h3>Family</h3>
+            <h3>Marriage &amp; Relationship Analysis</h3>
             <p>
-              Family therapy sessions aim to improve family dynamics, resolve conflicts, and strengthen bonds. By
-              promoting understanding and effective communication, we help families navigate challenges together and
-              create harmonious relationships.
+              Explore marriage prospects, compatibility, relationship patterns, Manglik Dosha, and important planetary
+              influences affecting your married life.
             </p>
           </article>
-          <div aria-hidden="true" />
+          <article>
+            <span className="wx-rule" />
+            <h3>Prashna Kundli</h3>
+            <p>
+              Receive traditional Prashna-based astrological guidance for a specific question or important decision in
+              your life.
+            </p>
+          </article>
+          <article>
+            <span className="wx-rule" />
+            <h3>Gemstone Consultation</h3>
+            <p>
+              Explore traditional gemstone recommendations based on your birth chart, planetary placements, and
+              individual astrological considerations.
+            </p>
+          </article>
+          <article>
+            <span className="wx-rule" />
+            <h3>Annual Horoscope Reading</h3>
+            <p>
+              Understand the major planetary transits, opportunities, challenges, and themes that may influence your
+              upcoming year.
+            </p>
+          </article>
         </div>
       </Section>
 
       {/* ---------------- My Approach ---------------- */}
       <Section cls="wx-approach" id="approach">
-        <h2>My Approach</h2>
+        <h2>A Thoughtful Approach to Vedic Astrology</h2>
         <div className="wx-approach-list">
           <div className="wx-approach-row">
             {/* <LeafIcon /> */}
@@ -227,10 +270,10 @@ function Index() {
               width={100}
               height={100}
             />
-            <h3>Confidentiality</h3>
+            <h3>Traditional Wisdom</h3>
             <p>
-              Confidentiality is at the core of our therapy practice. We prioritize privacy and trust, ensuring that
-              your personal information and sessions remain completely confidential.
+              Rooted in classical Vedic astrology, every reading considers planetary positions, houses, nakshatras,
+              dashas, and transits.
             </p>
           </div>
           <div className="wx-approach-row">
@@ -241,10 +284,10 @@ function Index() {
               width={100}
               height={100}
             />
-            <h3>Empathy</h3>
+            <h3>Personalized Guidance</h3>
             <p>
-              Empathy is the foundation of our therapeutic approach. We provide a compassionate and understanding
-              environment where you can feel heard, validated, and supported throughout your healing journey.
+              Every birth chart is unique. Consultations are tailored to your individual circumstances, questions, and
+              life goals.
             </p>
           </div>
           <div className="wx-approach-row">
@@ -255,10 +298,23 @@ function Index() {
               width={100}
               height={100}
             />
-            <h3>Personalized Care</h3>
+            <h3>Clarity Over Fear</h3>
             <p>
-              We believe in offering personalized care to every client. Our tailored therapy sessions focus on your
-              unique needs and goals, allowing for a customized therapeutic experience.
+              Astrology should empower rather than create fear. Understand potential challenges through a balanced and
+              thoughtful perspective.
+            </p>
+          </div>
+          <div className="wx-approach-row">
+            <img
+              src={anahataImg}
+              alt=""
+              width={100}
+              height={100}
+            />
+            <h3>Practical Understanding</h3>
+            <p>
+              Complex astrological concepts are explained in simple language so you can make informed personal
+              decisions.
             </p>
           </div>
         </div>
@@ -266,28 +322,35 @@ function Index() {
 
       {/* ---------------- Client Feedback ---------------- */}
       <Section cls="wx-feedback" id="feedback">
-        <h2>Client Feedback</h2>
+        <h2>Experiences Shared by Clients</h2>
         <div className="wx-feedback-grid">
           <div className="wx-feedback-card">
             <Quote>
-              &ldquo;Lee Mor has been a guiding light in my journey towards self-discovery and healing. Their
-              compassionate approach and expertise have truly&rdquo;
+              &ldquo;The consultation was incredibly detailed. Acharya Vedant explained my birth chart in a way that was
+              easy to understand. I appreciated the balanced and practical approach.&rdquo;
             </Quote>
-            <cite>Sara H.</cite>
+            <cite>Ananya Mehta</cite>
           </div>
           <div className="wx-feedback-card">
             <Quote>
-              &ldquo;I am grateful for Lee Mor&apos;s support and guidance during a challenging time in my life. Their
-              professionalism and care have been invaluable.&rdquo;
+              &ldquo;I wanted clarity regarding my professional direction. The session helped me understand the
+              astrological concepts involved and reflect on my next steps.&rdquo;
             </Quote>
-            <cite>James T.</cite>
+            <cite>Rohan Desai</cite>
           </div>
           <div className="wx-feedback-card">
             <Quote>
-              &ldquo;Lee Mor&apos;s therapy sessions have provided me with a safe space to explore my thoughts and
-              emotions. I highly recommend their services&rdquo;
+              &ldquo;A very thoughtful consultation. Everything was explained patiently, and I especially appreciated
+              the emphasis on understanding rather than fear.&rdquo;
             </Quote>
-            <cite>Emily L.</cite>
+            <cite>Kavya Shah</cite>
+          </div>
+          <div className="wx-feedback-card" style={{ gridColumn: "1 / -1", marginTop: 40 }}>
+            <Quote>
+              &ldquo;The marriage compatibility discussion was informative and comprehensive. The entire experience felt
+              professional and welcoming.&rdquo;
+            </Quote>
+            <cite>Arjun Malhotra</cite>
           </div>
         </div>
       </Section>
@@ -297,49 +360,81 @@ function Index() {
         <h2>Frequently Asked Questions</h2>
         <div className="wx-faq-grid">
           <div className="wx-faq-row">
-            <h3>What services do you offer?</h3>
+            <h3>What information is required for a consultation?</h3>
             <p>
-              Lee Mor provides a range of therapy services tailored to individual needs, including cognitive behavioral
-              therapy, mindfulness techniques, and stress management. Each session is personalized to address specific
-              concerns and promote overall well-being.
+              You will generally need your date of birth, exact time of birth, and place of birth. These details help
+              prepare your Vedic birth chart.
+            </p>
+          </div>
+          {/*<div className="wx-faq-row">
+            <h3>Do I need to know my exact birth time?</h3>
+            <p>
+              An accurate birth time is helpful for calculating the ascendant and house placements. If you do not know
+              your exact birth time, mention this before your consultation.
+            </p>
+          </div>*/}
+          <div className="wx-faq-row">
+            <h3>What types of astrology consultations are available?</h3>
+            <p>
+              Services include Kundli analysis, career guidance, marriage compatibility, Prashna Kundli, gemstone
+              consultations, and annual horoscope readings.
             </p>
           </div>
           <div className="wx-faq-row">
-            <h3>How do I schedule an appointment?</h3>
+            <h3>How can I book a consultation?</h3>
             <p>
-              Scheduling an appointment with Lee Mor is easy. Simply contact our office via phone or email to book a
-              convenient time for your initial consultation. We strive to accommodate your schedule and provide prompt
-              assistance.
+              Browse the available services, select your preferred consultation, choose an available date and time, and
+              complete the booking process.
             </p>
           </div>
+          {/*<div className="wx-faq-row">
+            <h3>Can I ask a specific question without booking a call?</h3>
+            <p>
+              Yes. You can select the Ask a Question service, choose a relevant topic, submit your question, and receive
+              a written response.
+            </p>
+          </div>*/}
           <div className="wx-faq-row">
-            <h3>What can I expect during a therapy session?</h3>
+            <h3>Are consultations confidential?</h3>
             <p>
-              During a therapy session with Lee Mor, you can expect a safe and confidential environment where you can
-              openly discuss your thoughts and feelings. Our therapist will listen attentively, offer guidance, and work
-              collaboratively with you to explore solutions and promote personal growth.
+              Yes. Personal birth details and consultation discussions are treated as private information and should
+              only be used for providing the requested service.
             </p>
           </div>
+          {/*<div className="wx-faq-row">
+            <h3>Are gemstone recommendations compulsory?</h3>
+            <p>
+              No. Gemstones are optional traditional recommendations. No purchase is required to receive an astrology
+              consultation.
+            </p>
+          </div>*/}
+          {/*<div className="wx-faq-row">
+            <h3>Does astrology guarantee future events?</h3>
+            <p>
+              Astrology offers traditional interpretations and perspectives, not guaranteed outcomes. Personal choices,
+              circumstances, and actions remain important.
+            </p>
+          </div>*/}
         </div>
       </Section>
 
       {/* ---------------- Footer ---------------- */}
       <footer className="wx-footer" id="contact">
         <div className="wx-footer-inner">
-          <a className="wx-footer-logo" href="#top" aria-label="Lee Mor home">
-          <img src={footerLogo} alt="Lee Mor" width={158} height={40} />
+          <a className="wx-footer-logo" href="#top" aria-label="Aether Jyotish home">
+          <img src={footerLogo} alt="Aether Jyotish" width={158} height={40} />
         </a>
         <div className="wx-footer-col">
-          <a href="tel:1234567890">123-456-7890</a>
-          <a className="is-underline" href="mailto:info@mysite.com">
-            info@mysite.com
+          <a href="tel:+919000012345">+91 90000 12345</a>
+          <a className="is-underline" href="mailto:hello@example.com">
+            hello@example.com
           </a>
           <a
-            href="https://www.google.com/maps/search/?api=1&query=500+Terry+Francine+St.+San+Francisco,+CA+94158"
+            href="https://www.google.com/maps/search/?api=1&query=12,+Celestial+Avenue,+Navrangpura,+Ahmedabad,+Gujarat,+India"
             target="_blank"
             rel="noreferrer noopener"
           >
-            500 Terry Francine St. San Francisco, CA 94158
+            12, Celestial Avenue, Navrangpura, Ahmedabad, Gujarat, India
           </a>
         </div>
         <div className="wx-footer-col">
@@ -350,7 +445,7 @@ function Index() {
         <div className="wx-footer-bottom">
           <p className="wx-copyright">
             <a className="is-underline" href={SUPERTALKS_URL} target="_blank" rel="noreferrer noopener">
-              © 2027 by Lee Mor. Powered and secured by Supertalks
+               © 2027 by Aether Jyotish. Powered and secured by Supertalks
             </a>
           </p>
         </div>
