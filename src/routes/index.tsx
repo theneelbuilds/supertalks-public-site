@@ -345,13 +345,13 @@ function Index() {
             </Quote>
             <cite>Kavya Shah</cite>
           </div>
-          <div className="wx-feedback-card" style={{ gridColumn: "1 / -1", marginTop: 40 }}>
+          {/*<div className="wx-feedback-card" style={{ gridColumn: "1 / -1", marginTop: 40 }}>
             <Quote>
               &ldquo;The marriage compatibility discussion was informative and comprehensive. The entire experience felt
               professional and welcoming.&rdquo;
             </Quote>
             <cite>Arjun Malhotra</cite>
-          </div>
+          </div>*/}
         </div>
       </Section>
 
