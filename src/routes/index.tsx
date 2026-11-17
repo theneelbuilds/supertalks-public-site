@@ -119,7 +119,10 @@ function Index() {
       <Section cls="wx-hero">
         <header className="wx-header">
           <a href="#top" aria-label="Home">
-            <img src={headerLogo} alt="Aether Jyotish" width={179} height={39} />
+            {/*<img src={headerLogo} alt="Aether Jyotish" width={179} height={39} />*/}
+            <h1 className="text-xl">
+              Aether Jyotish
+            </h1>
           </a>
           <div className="wx-header-actions">
             <a className="wx-header-dash" href={dashboardUrl("/dashboard")}>
@@ -422,7 +425,8 @@ function Index() {
       <footer className="wx-footer" id="contact">
         <div className="wx-footer-inner">
           <a className="wx-footer-logo" href="#top" aria-label="Aether Jyotish home">
-          <img src={footerLogo} alt="Aether Jyotish" width={158} height={40} />
+            {/*<img src={footerLogo} alt="Aether Jyotish" width={158} height={40} />*/}
+            Aether Jyotish
         </a>
         <div className="wx-footer-col">
           <a href="tel:+919000012345">+91 90000 12345</a>
