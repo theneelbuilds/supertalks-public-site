@@ -124,11 +124,11 @@ function Index() {
               Aether Jyotish
             </h1>
           </a>
-          <div className="wx-header-actions">
+          {/*<div className="wx-header-actions">
             <a className="wx-header-dash" href={dashboardUrl("/dashboard")}>
               My Dashboard
             </a>
-            {/* <button
+             <button
               type="button"
               className="wx-menu-btn"
               onClick={() => setMenuOpen(true)}
@@ -137,8 +137,8 @@ function Index() {
               aria-label="Open navigation"
             >
               <MenuIcon />
-            </button> */}
-          </div>
+            </button>
+          </div>*/}
         </header>
 
         <div className="wx-hero-copy">
