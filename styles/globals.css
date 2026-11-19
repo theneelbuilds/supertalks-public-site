@@ -213,7 +213,7 @@
   width: 100%;
   height: 120px;
   box-sizing: border-box;
-  padding: 27px 22px 0 23px;
+  padding: 27px 22px 0 63px;
   pointer-events: none;
 }
 
@@ -1186,6 +1186,11 @@
 }
 
 .wx-slot:hover:not(:disabled) {
+  background: var(--site-maroon);
+  color: var(--site-white);
+}
+
+.wx-slot.is-active {
   background: var(--site-maroon);
   color: var(--site-white);
 }
