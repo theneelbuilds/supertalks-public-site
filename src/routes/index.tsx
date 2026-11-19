@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import headerLogo from "../assets/wix-header-logo.png";
 import footerLogo from "../assets/wix-logo.png";
-import solar_system from "../assets/solar_system.jpg";
+import solar_system from "../assets/solar_system_2.jpg";
 import astrologer from "../assets/astrologer-test.jpeg";
 import anahataImg from "@/assets/icons/anahata.png"
 import lotusImg from "@/assets/icons/lotus-1.png"
@@ -561,7 +561,7 @@ function Index() {
           <a href="#top" aria-label="Home">
             {/*<img src={headerLogo} alt="Aether Jyotish" width={179} height={39} />*/}
             <h1 className="text-xl">
-              Aether Jyotish
+              Vedant Sharma
             </h1>
           </a>
           {/*<div className="wx-header-actions">
@@ -872,7 +872,7 @@ function Index() {
         <div className="wx-footer-inner">
           <a className="wx-footer-logo" href="#top" aria-label="Aether Jyotish home">
             {/*<img src={footerLogo} alt="Aether Jyotish" width={158} height={40} />*/}
-            Aether Jyotish
+            Vedant Sharma
         </a>
         <div className="wx-footer-col">
           <a href="tel:+919000012345">+91 90000 12345</a>
