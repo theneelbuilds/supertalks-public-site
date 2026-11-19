@@ -1190,6 +1190,11 @@
   color: var(--site-white);
 }
 
+.wx-slot.is-active {
+  background: var(--site-maroon);
+  color: var(--site-white);
+}
+
 .wx-slot:disabled {
   opacity: 0.5;
   cursor: default;

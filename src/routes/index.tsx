@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import headerLogo from "../assets/wix-header-logo.png";
 import footerLogo from "../assets/wix-logo.png";
-import scene from "../assets/wix-livingroom.jpg";
-import portrait from "../assets/wix-portrait.jpg";
+import solar_system from "../assets/solar_system.jpg";
+import astrologer from "../assets/astrologer-test.jpeg";
 import anahataImg from "@/assets/icons/anahata.png"
 import lotusImg from "@/assets/icons/lotus-1.png"
 import shellImg from "@/assets/icons/shell-1.png"
@@ -99,6 +99,446 @@ function Section(props: { children: React.ReactNode; cls: string; id?: string })
   );
 }
 
+function ArrowLeftIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+      <path d="M15 18l-6-6 6-6" />
+    </svg>
+  );
+}
+
+function ArrowRightIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+      <path d="M9 18l6-6-6-6" />
+    </svg>
+  );
+}
+
+function dateKey(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
+function upcomingDays(count: number): { key: string; label: string }[] {
+  const now = new Date();
+  const days: { key: string; label: string }[] = [];
+  for (let i = 0; i < count; i++) {
+    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i);
+    days.push({
+      key: dateKey(d),
+      label: d.toLocaleDateString("en-IN", { weekday: "short", day: "numeric" }),
+    });
+  }
+  return days;
+}
+
+const BOOKING_SLOTS = [
+  "09:00 AM",
+  "10:30 AM",
+  "12:00 PM",
+  "02:30 PM",
+  "04:00 PM",
+  "05:30 PM",
+];
+
+type QuestionTopic = {
+  title: string;
+  description: string;
+  questions: string[];
+};
+
+const QUESTION_TOPICS: QuestionTopic[] = [
+  {
+    title: "My Career",
+    description: "Questions regarding my career, job, business and financial stability.",
+    questions: [
+      "Which field will I be successful in?",
+      "When will I succeed in my career?",
+      "What is the scope of my career and when can I expect a good opportunity?",
+      "What is better for me: Government Job, Private Job or Business?",
+      "Which career field is good for me and which should I avoid?",
+      "How will my current job be and what is its future scope?",
+      "What will be the major turning point in my life?",
+      "Which single gemstone is suitable for my overall problems?",
+      "When will I get a job?",
+      "Which careers can bring financial stability for me?",
+    ],
+  },
+  {
+    title: "About My Marriage",
+    description: "Questions regarding your future spouse and married life.",
+    questions: [
+      "How will his/her nature be?",
+      "How will his/her looks be?",
+      "What will his/her profession be?",
+      "What type of marriage will I have: Love or Arranged?",
+      "Will it be inter-caste or same caste?",
+      "Will I marry a friend or an unknown person?",
+      "Which direction is favorable for my marriage?",
+      "When will I get married? Give the year and estimated months.",
+      "Is Kumbh Vivah necessary for me or not?",
+      "Is there Manglik Dosha in my horoscope?",
+      "What is one gemstone, mantra or remedy for my overall problems?",
+      "How will my married life be?",
+    ],
+  },
+  {
+    title: "My Health",
+    description: "Questions regarding health, wellness and self-care.",
+    questions: [
+      "Which areas of my body need extra care?",
+      "Do I recover quickly from illness?",
+      "What kind of daily routine suits me best?",
+      "When should I focus more on self-care?",
+      "Is this a good time to start a healthy routine?",
+    ],
+  },
+];
+
+function BookingSection() {
+  const days = useMemo(() => upcomingDays(28), []);
+  const weekSize = 7;
+  const maxWeekOffset = Math.max(0, Math.ceil(days.length / weekSize) - 1);
+  const [weekOffset, setWeekOffset] = useState(0);
+  const [date, setDate] = useState(() => dateKey(new Date()));
+  const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
+
+  const weekDays = days.slice(weekOffset * weekSize, weekOffset * weekSize + weekSize);
+  const dateLabel = days.find((day) => day.key === date)?.label ?? "the selected day";
+
+  const goToWeek = (next: number) => {
+    const clamped = Math.max(0, Math.min(maxWeekOffset, next));
+    setWeekOffset(clamped);
+    const shown = days.slice(clamped * weekSize, clamped * weekSize + weekSize);
+    if (!shown.some((day) => day.key === date) && shown[0]) {
+      setDate(shown[0].key);
+      setSelectedSlot(null);
+    }
+  };
+
+  return (
+    <Section cls="wx-book" id="book">
+      <div className="wx-book-head">
+        <h2>Book a Consultation</h2>
+        <p>Choose a convenient day and time for your personalized astrology consultation.</p>
+      </div>
+      <div id="slot-picker" className="wx-book-week scroll-mt-24">
+        <button
+          type="button"
+          className="wx-book-week-nav"
+          aria-label="Previous week"
+          disabled={weekOffset === 0}
+          onClick={() => goToWeek(weekOffset - 1)}
+        >
+          <ArrowLeftIcon />
+        </button>
+        <div className="wx-book-days">
+          {weekDays.map((day) => (
+            <button
+              key={day.key}
+              type="button"
+              className={day.key === date ? "is-active" : ""}
+              onClick={() => {
+                setDate(day.key);
+                setSelectedSlot(null);
+              }}
+            >
+              {day.label}
+            </button>
+          ))}
+        </div>
+        <button
+          type="button"
+          className="wx-book-week-nav"
+          aria-label="Next week"
+          disabled={weekOffset >= maxWeekOffset}
+          onClick={() => goToWeek(weekOffset + 1)}
+        >
+          <ArrowRightIcon />
+        </button>
+      </div>
+      <div className="wx-book-slots">
+        <p className="wx-book-note">Available times on {dateLabel}</p>
+        <div className="wx-slot-grid">
+          {BOOKING_SLOTS.map((slot) => (
+            <button
+              key={slot}
+              type="button"
+              className={`wx-slot${selectedSlot === slot ? " is-active" : ""}`}
+              onClick={() => setSelectedSlot(slot)}
+            >
+              {slot}
+            </button>
+          ))}
+        </div>
+        {selectedSlot ? (
+          <p className="wx-book-ok">
+            {selectedSlot} on {dateLabel} selected. Sign in to confirm your booking.
+          </p>
+        ) : null}
+      </div>
+      <p className="wx-book-note">
+        Sign in (or create a free account) to book a slot.
+        <span className="wx-auth-btns">
+          <a className="wx-auth-btn" href={dashboardUrl("/dashboard")}>
+            Sign in
+          </a>
+          <a className="wx-auth-btn wx-auth-btn-solid" href={dashboardUrl("/dashboard")}>
+            Create Account
+          </a>
+        </span>
+      </p>
+    </Section>
+  );
+}
+
+function QuestionSection() {
+  const [categoryIndex, setCategoryIndex] = useState<number | null>(null);
+  const [picked, setPicked] = useState<string[]>([]);
+  const [status, setStatus] = useState<string | null>(null);
+  const [clientDetails, setClientDetails] = useState({
+    clientName: "",
+    birthDate: "",
+    birthTime: "",
+    birthPlace: "",
+  });
+
+  const setDetail = (key: keyof typeof clientDetails, value: string) =>
+    setClientDetails((cur) => ({ ...cur, [key]: value }));
+
+  const activeTopic = categoryIndex != null ? QUESTION_TOPICS[categoryIndex] ?? null : null;
+
+  useEffect(() => {
+    if (categoryIndex != null) {
+      const el = document.getElementById(`questions-${categoryIndex}`);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+  }, [categoryIndex]);
+
+  const isPicked = (question: string, category: string) =>
+    picked.includes(`${category}::${question}`);
+
+  const toggleQuestion = (question: string, category: string) => {
+    const key = `${category}::${question}`;
+    setStatus(null);
+    setPicked((cur) =>
+      cur.includes(key) ? cur.filter((entry) => entry !== key) : [...cur, key],
+    );
+  };
+
+  const totalCount = picked.length;
+  const detailsComplete =
+    clientDetails.clientName.trim().length > 0 &&
+    clientDetails.birthDate.length > 0 &&
+    clientDetails.birthTime.length > 0 &&
+    clientDetails.birthPlace.trim().length > 0;
+
+  return (
+    <Section cls="wx-question" id="question">
+      <div className="wx-question-head">
+        <h2>Ask an Astrologer</h2>
+        <p>
+          Have a question about your birth chart, career, relationships, or life&apos;s next chapter?
+          Send your question and receive personalized guidance.
+        </p>
+      </div>
+      <div className="max-w-4xl w-full">
+        <header className="m-8">
+          <p className="text-sm font-semibold text-indigo-600 mb-2">STEP 1 OF 2</p>
+          <h3 className="text-2xl md:text-3xl font-bold text-gray-900">Select Your Question Topic</h3>
+          <p className="mt-2 text-gray-500">Choose a topic and select the questions you want answered.</p>
+        </header>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          {QUESTION_TOPICS.map((topic, index) => {
+            const isCategorySelected = categoryIndex === index;
+            return (
+              <button
+                key={`${topic.title}-${index}`}
+                type="button"
+                onClick={() => setCategoryIndex(index)}
+                className={`text-left rounded-2xl border-2 p-5 transition-all duration-200 ${
+                  isCategorySelected
+                    ? "border-indigo-600 bg-indigo-50 shadow-md"
+                    : "border-gray-200 bg-white hover:border-indigo-300 hover:shadow-md"
+                }`}
+              >
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h4 className="text-lg font-bold text-gray-900">{topic.title}</h4>
+                    {topic.description ? (
+                      <p className="mt-2 text-sm text-gray-500">{topic.description}</p>
+                    ) : null}
+                  </div>
+                  {isCategorySelected && <span className="text-indigo-600 text-xl">✓</span>}
+                </div>
+                <div className="mt-4 text-sm font-medium text-indigo-600">
+                  {topic.questions.length} question{topic.questions.length === 1 ? "" : "s"}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {activeTopic ? (
+          <div id={`questions-${categoryIndex}`} className="border-t border-gray-200 pt-8">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-5">
+              <div>
+                <h4 className="text-xl md:text-2xl font-bold text-gray-900">{activeTopic.title}</h4>
+                <p className="text-sm text-gray-500 mt-1">Select the questions you want to ask.</p>
+              </div>
+              <div className="text-sm font-semibold text-indigo-600">{totalCount} selected</div>
+            </div>
+
+            <div className="space-y-3">
+              {activeTopic.questions.map((question, index) => {
+                const isQuestionSelected = isPicked(question, activeTopic.title);
+                return (
+                  <button
+                    key={question}
+                    type="button"
+                    onClick={() => toggleQuestion(question, activeTopic.title)}
+                    className={`w-full flex items-start gap-4 text-left p-4 rounded-xl border transition-all ${
+                      isQuestionSelected
+                        ? "border-indigo-600 bg-indigo-50"
+                        : "border-gray-200 hover:border-indigo-300 hover:bg-gray-50"
+                    }`}
+                  >
+                    <div
+                      className={`flex-shrink-0 w-6 h-6 rounded-md border-2 flex items-center justify-center ${
+                        isQuestionSelected
+                          ? "bg-indigo-600 border-indigo-600 text-white"
+                          : "border-gray-300 bg-white"
+                      }`}
+                    >
+                      {isQuestionSelected && <span className="text-sm">✓</span>}
+                    </div>
+                    <div className="flex-1">
+                      <span className="text-xs font-semibold text-gray-400">QUESTION {index + 1}</span>
+                      <p className="mt-1 text-gray-800 font-medium">{question}</p>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ) : (
+          <div className="rounded-2xl bg-gray-50 border border-dashed border-gray-300 p-8 text-center">
+            <div className="text-4xl mb-3">✨</div>
+            <h4 className="font-semibold text-gray-800">Choose a topic to continue</h4>
+            <p className="text-sm text-gray-500 mt-1">
+              Select one of the topics above to pick your questions.
+            </p>
+          </div>
+        )}
+
+        <p className="mt-6 text-sm text-gray-500">
+          Can&apos;t find your exact question?{" "}
+          <a href="#book" className="font-semibold text-indigo-600 hover:underline">
+            Book a slot
+          </a>{" "}
+          for a personalised consultation.
+        </p>
+
+        <div className="mt-8 pt-6 border-t border-gray-200">
+          {totalCount > 0 && (
+            <div id="birth-details" className="mb-6 scroll-mt-24 rounded-2xl border border-gray-200 bg-gray-50 p-5">
+              <h4 className="text-sm font-bold text-gray-900">Your birth details</h4>
+              <p className="mt-1 text-xs text-gray-500">
+                All fields are required for an accurate reading.
+              </p>
+              <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <label className="block sm:col-span-2">
+                  <span className="block text-sm font-medium text-gray-700">
+                    Your name <span className="text-red-500">*</span>
+                  </span>
+                  <input
+                    type="text"
+                    value={clientDetails.clientName}
+                    onChange={(e) => setDetail("clientName", e.target.value)}
+                    placeholder="Full name"
+                    className="mt-1.5 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none"
+                  />
+                </label>
+                <label className="block">
+                  <span className="block text-sm font-medium text-gray-700">
+                    Birth date <span className="text-red-500">*</span>
+                  </span>
+                  <input
+                    type="date"
+                    value={clientDetails.birthDate}
+                    onChange={(e) => setDetail("birthDate", e.target.value)}
+                    className="mt-1.5 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 focus:border-indigo-500 focus:outline-none"
+                  />
+                </label>
+                <label className="block">
+                  <span className="block text-sm font-medium text-gray-700">
+                    Birth time <span className="text-red-500">*</span>
+                  </span>
+                  <input
+                    type="time"
+                    value={clientDetails.birthTime}
+                    onChange={(e) => setDetail("birthTime", e.target.value)}
+                    className="mt-1.5 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 focus:border-indigo-500 focus:outline-none"
+                  />
+                </label>
+                <label className="block sm:col-span-2">
+                  <span className="block text-sm font-medium text-gray-700">
+                    Birth place <span className="text-red-500">*</span>
+                  </span>
+                  <input
+                    type="text"
+                    value={clientDetails.birthPlace}
+                    onChange={(e) => setDetail("birthPlace", e.target.value)}
+                    placeholder="City, country"
+                    className="mt-1.5 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none"
+                  />
+                </label>
+              </div>
+            </div>
+          )}
+          <div className="flex flex-col-reverse md:flex-row md:items-center md:justify-between gap-4">
+            <p className="text-sm text-gray-500">
+              {totalCount > 0
+                ? `${totalCount} question${totalCount === 1 ? "" : "s"} selected`
+                : "No questions selected"}
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                if (!detailsComplete) return;
+                setStatus("Your question is ready. Sign in to send it and track replies from your dashboard.");
+              }}
+              disabled={totalCount === 0 || !detailsComplete}
+              className="w-full md:w-auto bg-gradient-to-r from-green-500 to-teal-500 text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-xl transition transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+            >
+              <span className="mr-2">✓</span>
+              Ask a Question
+            </button>
+          </div>
+          {status ? <p className="wx-book-ok">{status}</p> : null}
+        </div>
+      </div>
+      <p className="wx-book-note">
+        Sign in (or create a free account) to send your question.
+        <span className="wx-auth-btns">
+          <a className="wx-auth-btn" href={dashboardUrl("/dashboard")}>
+            Sign in
+          </a>
+          <a className="wx-auth-btn wx-auth-btn-solid" href={dashboardUrl("/dashboard")}>
+            Create Account
+          </a>
+        </span>
+      </p>
+    </Section>
+  );
+}
+
 function Index() {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -160,7 +600,7 @@ function Index() {
 
         <div className="wx-hero-media">
           <img
-            src={portrait}
+            src={astrologer}
             alt="Acharya Vedant Sharma in a traditional astrology consultation room"
             width={720}
             height={694}
@@ -197,7 +637,7 @@ function Index() {
       {/* ---------------- Consultation room image band ---------------- */}
       <Section cls="wx-scene" aria-hidden="true">
         <img
-          src={scene}
+          src={solar_system}
           alt="Peaceful traditional Vedic astrology consultation space with warm lighting and spiritual decor"
           width={1440}
           height={900}
@@ -322,6 +762,12 @@ function Index() {
           </div>
         </div>
       </Section>
+
+      {/* ---------------- Book a Session ---------------- */}
+      <BookingSection />
+
+      {/* ---------------- Ask a Question ---------------- */}
+      <QuestionSection />
 
       {/* ---------------- Client Feedback ---------------- */}
       <Section cls="wx-feedback" id="feedback">
