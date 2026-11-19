@@ -895,7 +895,7 @@ function Index() {
         <div className="wx-footer-bottom">
           <p className="wx-copyright">
             <a className="is-underline" href={SUPERTALKS_URL} target="_blank" rel="noreferrer noopener">
-               © 2027 by Aether Jyotish. Powered and secured by Supertalks
+               © 2027 by Aether Jyotish. Powered and secured by Grahaura
             </a>
           </p>
         </div>
